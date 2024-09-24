@@ -4,6 +4,7 @@ import 'package:commentme/controller/auth_controller.dart';
 import 'package:commentme/controller/user_controller.dart';
 import 'package:commentme/controller/comment_controller.dart';
 import 'package:commentme/routes.dart';
+import 'package:commentme/service/remote_config_service.dart';
 
 class Home extends StatelessWidget {
   Home({super.key});
@@ -11,6 +12,22 @@ class Home extends StatelessWidget {
   final authController = Get.find<AuthController>();
   final userController = Get.find<UserController>();
   final commentController = Get.put(CommentController());
+  final remoteConfigService = Get.find<RemoteConfigService>();
+
+  String maskEmail(String email) {
+    if (!remoteConfigService.shouldMaskEmail) return email;
+
+    final parts = email.split('@');
+    if (parts.length != 2) return email;
+
+    String name = parts[0];
+    String domain = parts[1];
+
+    if (name.length <= 3) return email;
+
+    String maskedName = '${name.substring(0, 3)}${'*' * (name.length - 3)}';
+    return '$maskedName@$domain';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +81,11 @@ class Home extends StatelessWidget {
                                   const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 4),
-                            Text(
-                              'Email: ${comment.email}',
-                              style: const TextStyle(
-                                  color: Colors.blue, fontSize: 12),
-                            ),
+                            Obx(() => Text(
+                                  'Email: ${maskEmail(comment.email)}',
+                                  style: const TextStyle(
+                                      color: Colors.blue, fontSize: 12),
+                                )),
                             const SizedBox(height: 8),
                             Text(
                               comment.body,
