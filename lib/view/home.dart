@@ -66,7 +66,7 @@ class _HomeViewState extends State<HomeView> {
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
-            icon: const Icon(Icons.exit_to_app, color: Colors.white),
+            icon: const Icon(Icons.logout, color: Colors.white),
             onPressed: () async {
               await authProvider.signOut();
               Navigator.of(context).pushReplacementNamed(AppRouter.login);
