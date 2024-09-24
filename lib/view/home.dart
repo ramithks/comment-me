@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:commentme/providers/auth_provider.dart';
 import 'package:commentme/providers/comment_provider.dart';
 import 'package:commentme/providers/user_provider.dart';
-import 'package:commentme/routes.dart';
+import 'package:commentme/app_router.dart';
 
 import '../model/comment.dart';
 

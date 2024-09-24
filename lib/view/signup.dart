@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:commentme/providers/auth_provider.dart';
-import 'package:commentme/routes.dart';
+import 'package:commentme/app_router.dart';
 
 class SignUpView extends StatelessWidget {
   SignUpView({super.key});

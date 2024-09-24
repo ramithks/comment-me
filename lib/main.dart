@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:commentme/firebase_options.dart';
 import 'package:commentme/providers/auth_provider.dart';
 import 'package:commentme/providers/user_provider.dart';
-import 'package:commentme/routes.dart';
+import 'package:commentme/app_router.dart';
 
 import 'providers/comment_provider.dart';
 import 'service/service_locator.dart';
