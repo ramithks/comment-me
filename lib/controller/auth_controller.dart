@@ -23,6 +23,7 @@ class AuthController extends GetxController {
   }
 
   void clear() {
+    _firebaseUser.value = null;
     userRx.value = null;
   }
 

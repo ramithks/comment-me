@@ -21,7 +21,7 @@ class SignUp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('sign_up'.tr),
+        title: const Text('Sign up'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -32,56 +32,56 @@ class SignUp extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 TextFormField(
-                  decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    hintText: 'full_name'.tr,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Full name',
                   ),
                   controller: nameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'please_enter_full_name'.tr;
+                      return 'Please enter full name';
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
-                  decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    hintText: 'email'.tr,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Email',
                   ),
                   controller: emailController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'please_enter_email'.tr;
+                      return 'Please enter email';
                     }
                     if (!isValidEmail(value)) {
-                      return 'please_enter_valid_email'.tr;
+                      return 'Please enter valid email';
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
-                  decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    hintText: 'password'.tr,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Password',
                   ),
                   obscureText: true,
                   controller: passwordController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'please_enter_password'.tr;
+                      return 'Please enter password';
                     }
                     if (value.length < 6) {
-                      return 'password_min_length'.tr;
+                      return 'Password min length';
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  child: Text('sign_up'.tr),
+                  child: const Text('Sign up'),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       controller.createUser(

@@ -19,7 +19,7 @@ class Login extends StatelessWidget {
       }
       return Scaffold(
         appBar: AppBar(
-          title: Text('login'.tr),
+          title: const Text('Login'),
         ),
         body: SingleChildScrollView(
           child: Center(
@@ -29,24 +29,24 @@ class Login extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   TextFormField(
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      hintText: 'email'.tr,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'email',
                     ),
                     controller: _emailController,
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      hintText: 'password'.tr,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'password',
                     ),
                     controller: _passwordController,
                     obscureText: true,
                   ),
                   const SizedBox(height: 30),
                   ElevatedButton(
-                    child: Text('log_in'.tr),
+                    child: const Text('Log in'),
                     onPressed: () async {
                       _authController.login(
                           _emailController.text, _passwordController.text);
@@ -54,7 +54,7 @@ class Login extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
                   TextButton(
-                    child: Text('sign_up'.tr),
+                    child: const Text('Sign up'),
                     onPressed: () {
                       Get.to(() => SignUp());
                     },
