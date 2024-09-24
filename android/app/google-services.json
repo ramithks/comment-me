@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1080666676198",
+    "project_id": "commentme-4af72",
+    "storage_bucket": "commentme-4af72.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1080666676198:android:ef80407ca598296f959427",
+        "android_client_info": {
+          "package_name": "com.example.commentme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB42iWwrYhyoIK2DO_7wrmYHcRMiXrCyf0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
