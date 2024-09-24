@@ -88,7 +88,17 @@ class SignUpView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  child: const Text('Sign up'),
+                  child: Consumer<AuthProvider>(
+                    builder: (context, authProvider, child) {
+                      if (authProvider.isLoading) {
+                        return const CircularProgressIndicator(
+                          color: Colors.white,
+                        );
+                      } else {
+                        return const Text('Sign up');
+                      }
+                    },
+                  ),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       try {

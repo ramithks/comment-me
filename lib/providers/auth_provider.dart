@@ -10,8 +10,10 @@ import '../services/user_service.dart';
 class AuthProvider extends ChangeNotifier {
   final AuthService _authService = getIt<AuthService>();
   fauth.User? _firebaseUser;
+  bool _isLoading = false;
 
   fauth.User? get user => _firebaseUser;
+  bool get isLoading => _isLoading;
 
   AuthProvider() {
     _authService.authStateChanges().listen((fauth.User? user) {
@@ -21,10 +23,14 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> createUser(String name, String email, String password) async {
+    _isLoading = true;
+    notifyListeners();
     try {
       fauth.UserCredential authResult = await _authService.createUser(email, password);
 
       if (authResult.user == null) {
+        _isLoading = false;
+        notifyListeners();
         throw Exception('authResult.user == null');
       }
 
@@ -38,11 +44,16 @@ class AuthProvider extends ChangeNotifier {
       
       final userService = getIt<UserService>();
       if (await userService.createNewUser(user)) {
+        _isLoading = false;
         notifyListeners();
       } else {
+        _isLoading = false;
+        notifyListeners();
         throw Exception('user was not created.');
       }
     } catch (e) {
+      _isLoading = false;
+      notifyListeners();
       if (kDebugMode) {
         print("Error creating Account: $e");
       }
@@ -51,11 +62,16 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> login(String email, String password) async {
+    _isLoading = true;
+    notifyListeners();
     try {
       fauth.UserCredential authResult = await _authService.login(email, password);
       _firebaseUser = authResult.user;
+      _isLoading = false;
       notifyListeners();
     } catch (e) {
+      _isLoading = false;
+      notifyListeners();
       if (kDebugMode) {
         print("Error signing in: $e");
       }

@@ -56,7 +56,17 @@ class LoginView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  child: const Text('Log in'),
+                  child: Consumer<AuthProvider>(
+                    builder: (context, authProvider, child) {
+                      if (authProvider.isLoading) {
+                        return const CircularProgressIndicator(
+                          color: Colors.white,
+                        );
+                      } else {
+                        return const Text('Log in');
+                      }
+                    },
+                  ),
                   onPressed: () async {
                     try {
                       await authProvider.login(
