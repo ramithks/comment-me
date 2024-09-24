@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +28,8 @@ class _HomeViewState extends State<HomeView> {
   Future<void> _initializeData() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final commentProvider = Provider.of<CommentProvider>(context, listen: false);
+    final commentProvider =
+        Provider.of<CommentProvider>(context, listen: false);
 
     if (authProvider.user != null) {
       await userProvider.fetchUser(authProvider.user!.uid);
@@ -43,10 +45,11 @@ class _HomeViewState extends State<HomeView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Comments', style: TextStyle(color: Colors.white)),
+        backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
-            icon: const Icon(Icons.exit_to_app),
+            icon: const Icon(Icons.exit_to_app, color: Colors.white),
             onPressed: () async {
               await authProvider.signOut();
               Navigator.of(context).pushReplacementNamed(AppRouter.login);
@@ -71,22 +74,14 @@ class _HomeViewState extends State<HomeView> {
               SliverToBoxAdapter(
                 child: _buildUserProfile(userProvider),
               ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'Comments',
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                ),
-              ),
               commentProvider.isLoading
                   ? const SliverFillRemaining(
                       child: Center(child: CircularProgressIndicator()),
                     )
                   : SliverList(
                       delegate: SliverChildBuilderDelegate(
-                        (context, index) => _buildCommentCard(commentProvider.comments[index]),
+                        (context, index) =>
+                            _buildCommentCard(commentProvider.comments[index]),
                         childCount: commentProvider.comments.length,
                       ),
                     ),
@@ -100,13 +95,14 @@ class _HomeViewState extends State<HomeView> {
   Widget _buildUserProfile(UserProvider userProvider) {
     return Card(
       margin: const EdgeInsets.all(16.0),
+      color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
             CircleAvatar(
               radius: 30,
-              backgroundColor: Colors.blue,
+              backgroundColor: Theme.of(context).primaryColor,
               child: Text(
                 userProvider.user!.name![0].toUpperCase(),
                 style: const TextStyle(fontSize: 24, color: Colors.white),
@@ -117,14 +113,52 @@ class _HomeViewState extends State<HomeView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    userProvider.user!.name!,
-                    style: Theme.of(context).textTheme.titleLarge,
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Name: ',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontStyle: FontStyle.italic,
+                              ),
+                        ),
+                        TextSpan(
+                          text: userProvider.user!.name!,
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    userProvider.user!.email ?? 'N/A',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Email: ',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontStyle: FontStyle.italic,
+                              ),
+                        ),
+                        TextSpan(
+                          text: userProvider.user!.email ?? 'N/A',
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -138,21 +172,87 @@ class _HomeViewState extends State<HomeView> {
   Widget _buildCommentCard(Comment comment) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Colors.green,
-          child: Text(comment.name[0].toUpperCase()),
-        ),
-        title: Text(comment.name),
-        subtitle: Column(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(comment.email),
-            const SizedBox(height: 4),
+            Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  child: Text(comment.name[0].toUpperCase(),
+                      style: const TextStyle(color: Colors.white)),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Name: ',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                            ),
+                            TextSpan(
+                              text: comment.name,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Email: ',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                            ),
+                            TextSpan(
+                              text: comment.email,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
             Text(
-              comment.body.length > 50 ? '${comment.body.substring(0, 50)}...' : comment.body,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+              comment.body,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
           ],
         ),

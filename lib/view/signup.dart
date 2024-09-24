@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +37,6 @@ class SignUpView extends StatelessWidget {
               children: <Widget>[
                 TextFormField(
                   decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
                     hintText: 'Full name',
                   ),
                   controller: nameController,
@@ -49,7 +50,6 @@ class SignUpView extends StatelessWidget {
                 const SizedBox(height: 20),
                 TextFormField(
                   decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
                     hintText: 'Email',
                   ),
                   controller: emailController,
@@ -66,7 +66,6 @@ class SignUpView extends StatelessWidget {
                 const SizedBox(height: 20),
                 TextFormField(
                   decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
                     hintText: 'Password',
                   ),
                   obscureText: true,
@@ -83,6 +82,12 @@ class SignUpView extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(200, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
                   child: const Text('Sign up'),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
@@ -101,7 +106,28 @@ class SignUpView extends StatelessWidget {
                       }
                     }
                   },
-                )
+                ),
+                const SizedBox(height: 30),
+                RichText(
+                  text: TextSpan(
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    children: [
+                      const TextSpan(text: "Already have an account? "),
+                      TextSpan(
+                        text: "Login",
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.of(context)
+                                .pushReplacementNamed(AppRouter.login);
+                          },
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

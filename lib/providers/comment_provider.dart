@@ -1,11 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
-
 import '../model/comment.dart';
+import '../service/comment_service.dart';
 
 class CommentProvider extends ChangeNotifier {
+  final CommentService _commentService = CommentService();
   List<Comment> _comments = [];
   bool _isLoading = false;
 
@@ -17,14 +15,7 @@ class CommentProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final response = await http
-          .get(Uri.parse('https://jsonplaceholder.typicode.com/comments'));
-      if (response.statusCode == 200) {
-        var jsonData = json.decode(response.body) as List;
-        _comments = jsonData
-            .map((commentJson) => Comment.fromJson(commentJson))
-            .toList();
-      }
+      _comments = await _commentService.fetchComments();
     } catch (e) {
       if (kDebugMode) {
         print('Error fetching comments: $e');

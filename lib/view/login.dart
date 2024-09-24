@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,22 +36,26 @@ class LoginView extends StatelessWidget {
               children: <Widget>[
                 TextFormField(
                   decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'email',
+                    hintText: 'Email',
                   ),
                   controller: _emailController,
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
                   decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'password',
+                    hintText: 'Password',
                   ),
                   controller: _passwordController,
                   obscureText: true,
                 ),
                 const SizedBox(height: 30),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(150, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
                   child: const Text('Log in'),
                   onPressed: () async {
                     try {
@@ -56,7 +63,8 @@ class LoginView extends StatelessWidget {
                         _emailController.text,
                         _passwordController.text,
                       );
-                      Navigator.of(context).pushReplacementNamed(AppRouter.home);
+                      Navigator.of(context)
+                          .pushReplacementNamed(AppRouter.home);
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(e.toString())),
@@ -65,12 +73,25 @@ class LoginView extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 30),
-                TextButton(
-                  child: const Text('Sign up'),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(AppRouter.signup);
-                  },
-                )
+                RichText(
+                  text: TextSpan(
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    children: [
+                      const TextSpan(text: "New here? "),
+                      TextSpan(
+                        text: "Signup",
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.of(context).pushNamed(AppRouter.signup);
+                          },
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
