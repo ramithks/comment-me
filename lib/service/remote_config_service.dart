@@ -32,4 +32,19 @@ class RemoteConfigService extends ChangeNotifier {
     _shouldMaskEmail = _remoteConfig.getBool('mask_email');
     notifyListeners();
   }
+
+  String maskEmail(String email) {
+    if (!_shouldMaskEmail) return email;
+
+    final parts = email.split('@');
+    if (parts.length != 2) return email;
+
+    String username = parts[0];
+    String domain = parts[1];
+
+    if (username.length <= 3) return email;
+
+    String maskedUsername = '${username.substring(0, 3)}${'*' * (username.length - 3)}';
+    return '$maskedUsername@$domain';
+  }
 }

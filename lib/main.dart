@@ -9,6 +9,7 @@ import 'package:commentme/providers/user_provider.dart';
 import 'package:commentme/app_router.dart';
 
 import 'providers/comment_provider.dart';
+import 'service/remote_config_service.dart';
 import 'service/service_locator.dart';
 
 void main() async {
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => CommentProvider()),
+        ChangeNotifierProvider(create: (_) => RemoteConfigService()),
       ],
       child: MaterialApp(
         title: 'CommentMe',

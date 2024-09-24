@@ -1,4 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +7,7 @@ import 'package:commentme/providers/user_provider.dart';
 import 'package:commentme/app_router.dart';
 
 import '../model/comment.dart';
+import '../service/remote_config_service.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -38,7 +38,10 @@ class _HomeViewState extends State<HomeView> {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final commentProvider =
         Provider.of<CommentProvider>(context, listen: false);
+    final remoteConfigService =
+        Provider.of<RemoteConfigService>(context, listen: false);
 
+    await remoteConfigService.initialize(); // Initialize remote config
     if (authProvider.user != null) {
       await userProvider.fetchUser(authProvider.user!.uid);
     }
@@ -122,6 +125,8 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget _buildUserProfile(UserProvider userProvider) {
+    final remoteConfigService =
+        Provider.of<RemoteConfigService>(context, listen: false);
     return Card(
       margin: const EdgeInsets.all(16.0),
       color: Colors.white,
@@ -180,7 +185,8 @@ class _HomeViewState extends State<HomeView> {
                               ),
                         ),
                         TextSpan(
-                          text: userProvider.user!.email ?? 'N/A',
+                          text: remoteConfigService
+                              .maskEmail(userProvider.user!.email ?? 'N/A'),
                           style:
                               Theme.of(context).textTheme.bodyLarge?.copyWith(
                                     fontWeight: FontWeight.bold,
@@ -199,6 +205,8 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget _buildCommentCard(Comment comment) {
+    final remoteConfigService =
+        Provider.of<RemoteConfigService>(context, listen: false);
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       color: Colors.white,
@@ -260,7 +268,8 @@ class _HomeViewState extends State<HomeView> {
                                   ),
                             ),
                             TextSpan(
-                              text: comment.email,
+                              text:
+                                  remoteConfigService.maskEmail(comment.email),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyLarge
