@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import '../model/comment.dart';
-import '../service/comment_service.dart';
+import '../models/comment.dart';
+import '../services/comment_service.dart';
 
 class CommentProvider extends ChangeNotifier {
   final CommentService _commentService = CommentService();

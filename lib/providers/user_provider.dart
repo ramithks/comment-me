@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:commentme/service/user_service.dart';
+import 'package:commentme/services/user_service.dart';
 
-import '../model/user.dart';
-import '../service/service_locator.dart';
+import '../models/user.dart';
+import '../services/service_locator.dart';
 
 class UserProvider extends ChangeNotifier {
   final UserService _userService = getIt<UserService>();

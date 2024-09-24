@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import "package:commentme/model/comment.dart";
+import "package:commentme/models/comment.dart";
 
 class CommentService {
   final int _limit = 20;

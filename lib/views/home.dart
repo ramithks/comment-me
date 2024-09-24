@@ -6,8 +6,8 @@ import 'package:commentme/providers/comment_provider.dart';
 import 'package:commentme/providers/user_provider.dart';
 import 'package:commentme/app_router.dart';
 
-import '../model/comment.dart';
-import '../service/remote_config_service.dart';
+import '../models/comment.dart';
+import '../services/remote_config_service.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:commentme/view/home.dart';
-import 'package:commentme/view/login.dart';
-import 'package:commentme/view/signup.dart';
+import 'package:commentme/views/home.dart';
+import 'package:commentme/views/login.dart';
+import 'package:commentme/views/signup.dart';
 
 class AppRouter {
   static const String login = '/';

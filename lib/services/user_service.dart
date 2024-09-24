@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:commentme/model/user.dart';
+import 'package:commentme/models/user.dart';
 
 class UserService {
   static UserService? _instance;

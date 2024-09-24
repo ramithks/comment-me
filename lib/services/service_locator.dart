@@ -1,8 +1,8 @@
 import 'package:get_it/get_it.dart';
 
-import 'package:commentme/service/auth_service.dart';
-import 'package:commentme/service/remote_config_service.dart';
-import 'package:commentme/service/user_service.dart';
+import 'package:commentme/services/auth_service.dart';
+import 'package:commentme/services/remote_config_service.dart';
+import 'package:commentme/services/user_service.dart';
 
 final getIt = GetIt.instance;
 

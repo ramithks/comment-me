@@ -9,8 +9,8 @@ import 'package:commentme/providers/user_provider.dart';
 import 'package:commentme/app_router.dart';
 
 import 'providers/comment_provider.dart';
-import 'service/remote_config_service.dart';
-import 'service/service_locator.dart';
+import 'services/remote_config_service.dart';
+import 'services/service_locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
