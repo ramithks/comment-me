@@ -36,8 +36,4 @@ class UserController extends GetxController {
   Future<User> getUser(String uid) async {
     return await userService.getUser(uid);
   }
-
-  void searchUserByName(String name) async {
-    searchResults.value = await userService.searchUserByName(name);
-  }
 }

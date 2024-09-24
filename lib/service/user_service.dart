@@ -34,15 +34,4 @@ class UserService {
       rethrow;
     }
   }
-
-  Future<List<User>> searchUserByName(String name) async {
-    QuerySnapshot snapshot = await _firestore
-        .collection('users')
-        .where('name', isGreaterThanOrEqualTo: name)
-        .get();
-
-    return snapshot.docs
-        .map((doc) => User.fromDocumentSnapshot(documentSnapshot: doc))
-        .toList();
-  }
 }
