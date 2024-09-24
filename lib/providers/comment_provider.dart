@@ -1,27 +1,27 @@
-import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:commentme/model/comment.dart';
 
-class CommentController extends GetxController {
-  var comments = <Comment>[].obs;
-  var isLoading = true.obs;
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
-  @override
-  void onInit() {
-    fetchComments();
-    super.onInit();
-  }
+import '../model/comment.dart';
 
-  void fetchComments() async {
-    isLoading(true);
+class CommentProvider extends ChangeNotifier {
+  List<Comment> _comments = [];
+  bool _isLoading = false;
+
+  List<Comment> get comments => _comments;
+  bool get isLoading => _isLoading;
+
+  Future<void> fetchComments() async {
+    _isLoading = true;
+    notifyListeners();
+
     try {
       final response = await http
           .get(Uri.parse('https://jsonplaceholder.typicode.com/comments'));
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body) as List;
-        comments.value = jsonData
+        _comments = jsonData
             .map((commentJson) => Comment.fromJson(commentJson))
             .toList();
       }
@@ -30,7 +30,8 @@ class CommentController extends GetxController {
         print('Error fetching comments: $e');
       }
     } finally {
-      isLoading(false);
+      _isLoading = false;
+      notifyListeners();
     }
   }
 }

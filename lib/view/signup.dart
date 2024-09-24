@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:commentme/controller/auth_controller.dart';
+import 'package:provider/provider.dart';
 
-class SignUp extends StatelessWidget {
-  SignUp({super.key});
+import 'package:commentme/providers/auth_provider.dart';
+import 'package:commentme/routes.dart';
+
+class SignUpView extends StatelessWidget {
+  SignUpView({super.key});
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  final AuthController controller = Get.find<AuthController>();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -19,6 +19,8 @@ class SignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sign up'),
@@ -82,13 +84,21 @@ class SignUp extends StatelessWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   child: const Text('Sign up'),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      controller.createUser(
-                        nameController.text,
-                        emailController.text,
-                        passwordController.text,
-                      );
+                      try {
+                        await authProvider.createUser(
+                          nameController.text,
+                          emailController.text,
+                          passwordController.text,
+                        );
+                        Navigator.of(context)
+                            .pushReplacementNamed(AppRouter.home);
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(e.toString())),
+                        );
+                      }
                     }
                   },
                 )

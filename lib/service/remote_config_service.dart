@@ -1,11 +1,11 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:get/get.dart';
+import 'package:flutter/foundation.dart';
 
-class RemoteConfigService extends GetxService {
+class RemoteConfigService extends ChangeNotifier {
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
-  final RxBool _shouldMaskEmail = false.obs;
+  bool _shouldMaskEmail = false;
 
-  bool get shouldMaskEmail => _shouldMaskEmail.value;
+  bool get shouldMaskEmail => _shouldMaskEmail;
 
   Future<RemoteConfigService> initialize() async {
     await _remoteConfig.setConfigSettings(RemoteConfigSettings(
@@ -29,6 +29,7 @@ class RemoteConfigService extends GetxService {
   }
 
   void _updateValues() {
-    _shouldMaskEmail.value = _remoteConfig.getBool('mask_email');
+    _shouldMaskEmail = _remoteConfig.getBool('mask_email');
+    notifyListeners();
   }
 }
