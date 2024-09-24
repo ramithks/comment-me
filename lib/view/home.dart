@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:commentme/providers/auth_provider.dart';
-import 'package:commentme/providers/user_provider.dart';
 import 'package:commentme/providers/comment_provider.dart';
+import 'package:commentme/providers/user_provider.dart';
 import 'package:commentme/routes.dart';
 
 import '../model/comment.dart';
@@ -18,11 +18,19 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   late Future<void> _initFuture;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _initFuture = _initializeData();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future<void> _initializeData() async {
@@ -34,7 +42,16 @@ class _HomeViewState extends State<HomeView> {
     if (authProvider.user != null) {
       await userProvider.fetchUser(authProvider.user!.uid);
     }
-    await commentProvider.fetchComments();
+    await commentProvider.fetchComments(refresh: true);
+  }
+
+  void _onScroll() {
+    final commentProvider =
+        Provider.of<CommentProvider>(context, listen: false);
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      commentProvider.fetchComments();
+    }
   }
 
   @override
@@ -57,37 +74,49 @@ class _HomeViewState extends State<HomeView> {
           ),
         ],
       ),
-      body: FutureBuilder(
-        future: _initFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
-          if (userProvider.user == null) {
-            return const Center(child: Text('User data not available'));
-          }
-          return CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: _buildUserProfile(userProvider),
-              ),
-              commentProvider.isLoading
-                  ? const SliverFillRemaining(
-                      child: Center(child: CircularProgressIndicator()),
-                    )
-                  : SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) =>
-                            _buildCommentCard(commentProvider.comments[index]),
-                        childCount: commentProvider.comments.length,
-                      ),
-                    ),
-            ],
-          );
-        },
+      body: RefreshIndicator(
+        onRefresh: () => commentProvider.fetchComments(refresh: true),
+        child: FutureBuilder(
+          future: _initFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+            if (userProvider.user == null) {
+              return const Center(child: Text('User data not available'));
+            }
+            return CustomScrollView(
+              controller: _scrollController,
+              slivers: [
+                SliverToBoxAdapter(
+                  child: _buildUserProfile(userProvider),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      if (index < commentProvider.comments.length) {
+                        return _buildCommentCard(
+                            commentProvider.comments[index]);
+                      } else if (commentProvider.hasMore) {
+                        return const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    },
+                    childCount: commentProvider.comments.length +
+                        (commentProvider.hasMore ? 1 : 0),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
